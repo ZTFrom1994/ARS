@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.BorrowApplicationMapper">
+    
+     <select id="getAllApplication"   resultMap="borrowApplicationResultMap" >
+         select * from borrow_application ba ,
+         			   ( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         				) p,
+         			   staff s,
+         			   event e
+         	where ba.ba_project_id = p.project_id and 
+         		  ba.ba_borrower_id = s.staff_id and 
+         		  ba.ba_event_id = e.event_id 
+     </select>
+     <select id="getApplicationById" parameterType="java.lang.Integer" resultMap="borrowApplicationResultMap">
+     		 select * from borrow_application ba ,
+         			   ( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         				) p,
+         			   staff s,
+         			   event e
+         	where ba.ba_project_id = p.project_id and 
+         		  ba.ba_borrower_id = s.staff_id and 
+         		  ba.ba_event_id = e.event_id and 
+         		  ba.ba_id = #{0}  
+         		  
+     </select>
+     <select id="getApplicationByState"  parameterType="java.lang.String" resultMap="borrowApplicationResultMap" >
+         select * from borrow_application ba,
+         			   ( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         				) p,
+         			   staff s,
+         			   event e
+         	where ba.ba_project_id = p.project_id and 
+         		  ba.ba_borrower_id = s.staff_id and 
+         		  ba.ba_event_id = e.event_id and 
+         		  ba_state = #{0}
+         		  
+     </select>
+     <select id="getAllApplicationByBorrowerId"  parameterType="java.lang.String" resultMap="borrowApplicationResultMap" >
+         select * from borrow_application ba ,
+         			   ( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         				) p,
+         			   staff s,
+         			   event e
+         	where ba.ba_project_id = p.project_id 
+         			and ba.ba_borrower_id = s.staff_id 
+         		 and   (ba.ba_event_id = e.event_id or ba.ba_event_id = -1)
+         		 and  ba.ba_borrower_id = #{0}
+         		 
+     </select>
+     <select id="getApplicationByIdAndBorrowerId" parameterType="java.lang.Integer" resultMap="borrowApplicationResultMap">
+     		 select * from borrow_application ba ,
+         			   ( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         				) p,
+         			   staff s,
+         			   event e
+         	where ba.ba_project_id = p.project_id and 
+         		  ba.ba_borrower_id = s.staff_id and 
+         		  ba.ba_event_id = e.event_id and 
+         		  ba.ba_id = #{0}
+         		   and  ba.ba_borrower_id = #{1}
+         		   
+     </select>
+     <select id="getApplicationByStateAndBorrowerId"  parameterType="java.lang.String" resultMap="borrowApplicationResultMap" >
+         select * from borrow_application ba,
+         			   ( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         				) p,
+         			   staff s,
+         			   event e
+         	where ba.ba_project_id = p.project_id and 
+         		  ba.ba_borrower_id = s.staff_id and 
+         		  ba.ba_event_id = e.event_id and 
+         		  ba_state = #{0}
+         		   and  ba.ba_borrower_id = #{1}
+         		   
+     </select>
+     
+     <select id="getApplicationByBorrowerId"  parameterType="java.lang.String" resultMap="borrowApplicationResultMap" >
+         select * from borrow_application ba ,
+         			   ( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         				) p,
+         			   staff s,
+         			   event e
+         	where ba.ba_project_id = p.project_id and 
+         		  ba.ba_borrower_id = s.staff_id and 
+         		  ba.ba_event_id = e.event_id and 
+         		  ba.ba_borrower_id = #{0}
+         		  
+     </select>
+     <select id="getApplicationBySheetId"  parameterType="java.lang.String" resultMap="borrowApplicationResultMap" >
+          select * from borrow_application ba,
+         			   ( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         				) p,
+         			   staff s,
+         			   event e
+         	where ba.ba_project_id = p.project_id and 
+         		  ba.ba_borrower_id = s.staff_id and 
+         		  ba.ba_event_id = e.event_id and 
+         		  ba_application_sheet_id = #{0}
+         		  
+     </select>
+     <insert id="addApplication" parameterType="BorrowApplication" useGeneratedKeys="true" keyProperty="id">
+     	insert into borrow_application
+     		(
+     			ba_project_id,
+     			ba_amount,
+     			ba_remarks,
+     			ba_state,
+     			ba_event_id,
+     			ba_borrower_id,
+     			ba_apply_date,
+     			ba_payment_type,
+     			ba_payment_days_limit,
+     			ba_use,
+     			ba_leave_messages
+     		)values
+     		(
+     			#{project.id},
+     			#{amount},
+     			#{remarks},
+     			#{state},
+     			#{event.id},
+     			#{borrower.id},
+     			#{applyDate},
+     			#{paymentType},
+     			#{paymentDaysLimit},
+     			#{use},
+     			#{leaveMessages}
+     		)
+     </insert>
+     <update id="batchUpdateWithList" parameterType="java.util.List" >
+	    <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+                update borrow_application   
+                	set 
+                		ba_state = #{item.state},
+                		ba_leave_messages = #{item.leaveMessages},
+                		ba_application_sheet_id = #{item.sheetId},
+                		ba_event_id = #{item.event.id}
+                where ba_id = #{item.id}
+         </foreach> 
+	</update>
+     <resultMap type="BorrowApplication" id="borrowApplicationResultMap">
+         <id property="id" column="ba_id"/>
+         <result property="amount" column="ba_amount"/>
+         <result property="remarks" column="ba_remarks"/>
+         <result property="paymentDaysLimit" column="ba_payment_days_limit"/>
+         <result property="paymentType" column="ba_payment_type"/>
+         <result property="state" column="ba_state"/>
+         <result property="applyDate" column="ba_apply_date"/>
+         <result property="leaveMessages" column="ba_leave_messages"/>
+         <result property="use" column="ba_use"/>
+         <result property="sheetId" column="ba_application_sheet_id"/>
+         <association property="project"  javaType="Project">
+			 <id property="id" column="project_id"/>
+	         <result property="projectName" column="project_name"/>
+	         <result property="department" column="project_department"/>
+	         <result property="reimburseLimit" column="project_reimburse_limit"/>
+	         <result property="balance" column="project_balance"/>
+	         <result property="state" column="project_state"/>
+	         <association property="principal"  javaType="Staff">
+				<id property="id" column="staff_id"/>
+				<result property="name" column="staff_name"/>
+				<result property="state" column="staff_state"/>
+				<result property="password" column="staff_password"/>
+				<result property="positionName" column="staff_position_name"/>
+				<result property="department" column="staff_department"/>
+				<result property="creditIntegral" column="staff_credit_integral"/>
+				<result property="registerDate" column="staff_register_date"/>
+				<result property="sex" column="staff_sex"/>
+	         </association>
+         </association>
+         <association property="borrower"  javaType="Staff">
+			<id property="id" column="staff_id"/>
+			<result property="name" column="staff_name"/>
+			<result property="state" column="staff_state"/>
+			<result property="password" column="staff_password"/>
+			<result property="positionName" column="staff_position_name"/>
+			<result property="department" column="staff_department"/>
+			<result property="creditIntegral" column="staff_credit_integral"/>
+			<result property="registerDate" column="staff_register_date"/>
+			<result property="sex" column="staff_sex"/>
+         </association>
+         <association property="event" javaType="Event">
+         	<id property="id" column="event_id"/>
+	         <result property="startTime" column="event_start_time"/>
+	         <result property="endTime" column="event_end_time"/>
+	         <result property="title" column="event_type"/>
+	         <result property="color" column="event_color"/>
+         </association>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

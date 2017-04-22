@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.AssessorOperationMapper">
+    
+     <select id="getAllRecordByAssessorId" parameterType="java.lang.Integer"  resultMap="assessorOperationRecordResultMap"
+         resultType="Admin">
+         select * from assessor_operation_record,assessor
+         		 where aor_assessor_id = assessor_id
+         		  		and aor_assessor_id = #{0}
+     </select>
+     <select id="getCustomRecordByAssessorId"  resultMap="assessorOperationRecordResultMap" statementType="STATEMENT">
+         select * from assessor_operation_record,assessor where 
+         	assessor_id = aor_assessor_id 
+         				and aor_assessor_id = ${param1} 
+         				and ${param2}
+         				and ${param3}
+         				and ${param4}
+     </select>
+     <select id="getTopThreeRecordByAssessorId" parameterType="java.lang.String"  resultMap="assessorOperationRecordResultMap">
+         select * from assessor_operation_record,assessor 
+         			where aor_assessor_id=#{0} 
+         				and assessor_id = aor_assessor_id order by aor_operation_time desc limit 0,2;
+     </select>
+     <insert id="addRecord" parameterType="AssessorOperationRecord">
+     	insert into assessor_operation_record
+     	(
+     		aor_check_type,
+     		aor_application_type,
+     		aor_operation_time,
+     		aor_operation_result,
+     		aor_assessor_id
+     	)values
+     	(
+     		#{checkType},
+     		#{applicationType},
+     		#{operationTime},
+     		#{operationResult},
+     		#{assessor.id}
+     	)
+     </insert>
+     
+     <resultMap type="AssessorOperationRecord" id="assessorOperationRecordResultMap">
+         <id property="id" column="aor_id"/>
+         <result property="checkType" column="aor_check_type"/>
+         <result property="applicationType" column="aor_application_type"/>
+         <result property="operationTime" column="aor_operation_time"/>
+         <result property="operationResult" column="aor_operation_result"/>
+         <association property="assessor" javaType="Assessor">
+	         <id property="id" column="assessor_id"/>
+	         <result property="name" column="assessor_name"/>
+	         <result property="state" column="assessor_state"/>
+	         <result property="password" column="assessor_password"/>
+	         <result property="positionName" column="assessor_position_name"/>
+	         <result property="department" column="assessor_department"/>
+	         <result property="operationTimes" column="assessor_operation_times"/>
+	         <result property="registerDate" column="assessor_register_date"/>
+	         <result property="sex" column="assessor_sex"/>
+         </association>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.TravelReimbursementItemMapper">
+	 <select id="getAllItems"  resultMap="travelItemsResultMap">
+	         select * from travel_reimbursement_item  
+     </select>
+     <insert id="batchAddByList" parameterType="java.util.List" >
+     	<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+	     	insert into travel_reimbursement_item( 
+	     			tri_tra_id,
+	     			tri_large_class,
+	     			tri_small_class,
+	     			tri_sheet_number,
+	     			tri_people_number,
+	     			tri_single_price,
+	     			tri_description
+	     		)values
+	     		(
+	     	 		#{item.traId},
+	     	 		#{item.largeClass},
+	     	 		#{item.smallClass},
+	     	 		#{item.sheetNumber},
+	     	 		#{item.peopleNumber},
+	     	 		#{item.singlePrice},
+	     	 		#{item.description}
+	     	 	)
+     	 	</foreach> 
+     </insert>
+     <resultMap type="TravelReimbursementItem" id="travelItemsResultMap">
+         	<id property="id" column="tri_id"/>
+	         <result property="traId" column="tri_tra_id"/>
+	         <result property="largeClass" column="tri_large_class"/>
+	         <result property="smallClass" column="tri_small_class"/>
+	         <result property="sheetNumber" column="tri_sheet_number"/>
+	         <result property="peopleNumber" column="tri_people_number"/>
+	         <result property="singlePrice" column="tri_single_price"/>
+	         <result property="desciption" column="tri_description"/>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

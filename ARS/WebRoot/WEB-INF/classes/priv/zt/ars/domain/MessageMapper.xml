@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.MessageMapper">
+   	<select id="getMessageByObject" parameterType="java.lang.Integer" resultMap="MessageResultMap">
+   		select * from message 
+   			where 
+   				message_object = 0 or
+   				message_object = #{0}
+   	</select>
+   	<select id="getAllMessage" resultMap="MessageResultMap">
+   		select * from message,admin 
+   				where message_sender_id = admin_id 
+   	</select>
+   	<select id="getCountById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+   		select count(*) from message 
+   				where message_sender_id = #{0}
+   	</select>
+     <insert id="addMessage" parameterType="Message" useGeneratedKeys="true" keyProperty="id">
+     	insert into message (
+     		message_object,
+     		message_content,
+     		message_state,
+     		message_type,
+     		message_sender_id,
+     		message_send_date
+     	)values(
+     		#{object},
+     		#{content},
+     		#{state},
+     		#{type},
+     		#{admin.id},
+     		#{date}
+     	)
+     	
+     </insert>
+     
+     <resultMap type="Message" id="MessageResultMap">
+         <id property="id" column="message_id"/>
+         <result property="object" column="message_object"/>
+         <result property="content" column="message_content"/>
+         <result property="state" column="message_state"/>
+         <result property="type" column="message_type"/>
+         <result property="date" column="message_send_date"/>
+         <association property="admin" javaType="Admin">
+         	 <id property="id" column="admin_id"/>
+	         <result property="name" column="admin_name"/>
+	         <result property="password" column="admin_password"/>
+	         <result property="sex" column="admin_sex"/>
+         </association>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

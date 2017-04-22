@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.AssessorMapper">
+    
+     <select id="getAssessorById" parameterType="java.lang.String"  resultMap="assessorResultMap"
+         resultType="Assessor">
+         select * from assessor where assessor_id=#{0} 
+     </select>
+     <select id="getAllAssessor"  resultMap="assessorResultMap" >
+         select * from assessor 
+     </select>
+     <select id="getDisabledCount" resultType="java.lang.Integer">
+     	select count(*) from assessor where assessor_state = '已封禁'
+     </select>
+     <update id="changePasswordById" parameterType="java.lang.String">
+     		update assessor set assessor_password = #{1} where assessor_id = #{0}
+     </update>
+     <update id="updateAssessor" parameterType="Assessor">
+     		update assessor set
+     			assessor_operation_times = #{operationTimes},
+     			assessor_state = #{state}
+     			where assessor_id = #{id}
+     </update>
+     <insert id="addAssessor" parameterType="Assessor">
+     		insert into assessor
+     		(
+     			assessor_id,
+     			assessor_name,
+     			assessor_state,
+     			assessor_password,
+     			assessor_position_name,
+     			assessor_department,
+     			assessor_operation_times,
+     			assessor_register_date,
+     			assessor_sex
+     		)values(
+     			#{id},
+     			#{name},
+     			#{state},
+     			#{password},
+     			#{positionName},
+     			#{department},
+     			#{operationTimes},
+     			#{registerDate},
+     			#{sex}
+     		)
+     </insert>
+     <resultMap type="Assessor" id="assessorResultMap">
+         <!-- 用id属性来映射主键字段 -->
+         <id property="id" column="assessor_id"/>
+         <!-- 用result属性来映射非主键字段 -->
+         <result property="name" column="assessor_name"/>
+         <result property="state" column="assessor_state"/>
+         <result property="password" column="assessor_password"/>
+         <result property="positionName" column="assessor_position_name"/>
+         <result property="department" column="assessor_department"/>
+         <result property="operationTimes" column="assessor_operation_times"/>
+         <result property="registerDate" column="assessor_register_date"/>
+         <result property="sex" column="assessor_sex"/>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

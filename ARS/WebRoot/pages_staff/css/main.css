@@ -1,0 +1,12 @@
+*:hover{
+	text-decoration: none;
+}
+.sidebar-form-msg{
+	padding-left:10px;
+}
+.hide{
+	display:none;
+}
+th{
+	font-size:14px;
+}

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.PaymentRecordMapper">
+    
+     
+     <insert id="addRecord" parameterType="PaymentRecord" >
+     	insert into payment_record
+     	(
+     		pr_borrow_record_id,
+     		pr_assessor_id,
+     		pr_amount
+     	)values(
+			#{borrowRecord.id},
+			#{assessor.id},
+			#{amount}     	
+     	)
+     
+     </insert>
+     
+     <resultMap type="PaymentRecord" id="adminResultMap">
+         <id property="id" column="pr_id"/>
+         <result property="amount" column="pr_amount"/>
+         <association property="borrowRecord" javaType="BorrowRecord">
+	         <id property="id" column="br_id"/>
+	         <result property="amount" column="br_amount"/>
+	         <result property="remarks" column="br_remarks"/>
+	         <result property="paymentTime" column="br_payment_time"/>
+	         <result property="state" column="br_state"/>
+	         <result property="paidMoney" column="br_paid_money"/>
+	         <result property="recordDate" column="br_record_date"/>
+	         <result property="use" column="br_use"/>
+	         <result property="applicationId" column="br_application_id"/>
+	         <association property="project"  javaType="Project">
+				 <id property="id" column="project_id"/>
+		         <result property="projectName" column="project_name"/>
+		         <result property="department" column="project_department"/>
+		         <result property="reimburseLimit" column="project_reimburse_limit"/>
+		         <result property="balance" column="project_balance"/>
+		         <result property="state" column="project_state"/>
+	         </association>
+	         <association property="borrower"  javaType="Staff">
+				<id property="id" column="staff_id"/>
+				<result property="name" column="staff_name"/>
+				<result property="state" column="staff_state"/>
+				<result property="password" column="staff_password"/>
+				<result property="positionName" column="staff_position_name"/>
+				<result property="department" column="staff_department"/>
+				<result property="creditIntegral" column="staff_credit_integral"/>
+				<result property="registerDate" column="staff_register_date"/>
+				<result property="sex" column="staff_sex"/>
+	         </association>
+         </association>
+         <association property="assessor" javaType="Assessor">
+	         <id property="id" column="assessor_id"/>
+	         <result property="name" column="assessor_name"/>
+	         <result property="state" column="assessor_state"/>
+	         <result property="password" column="assessor_password"/>
+	         <result property="positionName" column="assessor_position_name"/>
+	         <result property="department" column="assessor_department"/>
+	         <result property="operationTimes" column="assessor_operation_times"/>
+	         <result property="registerDate" column="assessor_register_date"/>
+	         <result property="sex" column="assessor_sex"/>
+         </association>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

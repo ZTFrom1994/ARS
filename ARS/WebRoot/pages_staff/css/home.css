@@ -1,0 +1,78 @@
+.div-mysheet{
+	height:100px;
+	background:white;
+}
+.div-circle{
+	font-size:30px;
+	margin-left:10px;
+	width:54px;
+	height:54px;
+	margin-top:20px;
+	border-radius:27px;
+	background:#D1E2EA;
+	color:white;
+	padding-left:10px;
+	padding-top:5px;
+	float:left;
+}
+.div-mysheetlabel{
+	float:left;
+	width:260px;
+	margin-left:10px;
+	
+}
+.div-reimbursement-info{
+	float:right;
+	width:140px;
+	height:100%; 
+	background:#9CE0E1;  
+	color:white; 
+	text-align:center;
+}
+.div-mysheet-details{
+	background:#FAFAFC;
+	height:340px;  
+	padding-top:15px;
+}
+.div-option-title{ 
+	border-bottom: 1px solid #F1F2F4;
+	padding-left:20px;
+	margin-left:30px;
+	padding-bottom:5px;
+	font-size:20px;
+} 
+.div-option-right-title{ 
+	border-bottom: 1px solid #F1F2F4;
+	padding-left:20px;
+	padding-bottom:5px;
+	font-size:20px;
+} 
+.div-items{
+	border-bottom: 1px solid #F1F2F4;
+	padding-left:35px;
+	height:60px;
+	margin-left:30px;
+	color:#8E9898;  
+}
+.div-right-items{
+	border-bottom: 1px solid #F1F2F4;
+	padding-left:35px; 
+	height:60px;
+	color:#8E9898;
+}
+.div-item{
+	height:30px;
+	padding-top:4px;
+}
+.div-items-list{
+	margin-bottom:26px;
+}
+.div-reason{
+	float:left;
+}
+.i-logo{
+	color:#8E9898;
+}
+.div-date{
+	float:right;
+}

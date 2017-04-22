@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.StaffMapper">
+    
+     <select id="getStaffById" parameterType="java.lang.String"  resultMap="staffResultMap"
+         resultType="Staff">
+         select * from staff where staff_id=#{0} 
+     </select>
+     <select id="getAllStaff" resultMap="staffResultMap">
+         select * from staff 
+     </select>
+     <select id="getDisabledCount" resultType="java.lang.Integer">
+     	select count(*) from staff where staff_state = '已封禁'
+     </select>
+     <update id="changePasswordById" parameterType="java.lang.String">
+     		update staff set staff_password = #{1} where staff_id = #{0}
+     </update>
+     <update id="updateStaff" parameterType="Staff">
+     		update staff set 
+     				staff_credit_integral = #{creditIntegral} ,
+     				staff_state = #{state}
+     				where staff_id = #{id}
+     </update>
+     <insert id="addStaff" parameterType="Staff">
+     	insert into staff 
+     	(
+     		staff_id,
+     		staff_name,
+     		staff_state,
+     		staff_password,
+     		staff_position_name,
+     		staff_department,
+     		staff_credit_integral,
+     		staff_register_date,
+     		staff_sex
+     	)values(
+     		#{id},
+     		#{name},
+     		#{state},
+     		#{password},
+     		#{positionName},
+     		#{department},
+     		#{creditIntegral},
+     		#{registerDate},
+     		#{sex}
+     	)
+     </insert>
+     <resultMap type="Staff" id="staffResultMap">
+        <id property="id" column="staff_id"/>
+		<result property="name" column="staff_name"/>
+		<result property="state" column="staff_state"/>
+		<result property="password" column="staff_password"/>
+		<result property="positionName" column="staff_position_name"/>
+		<result property="department" column="staff_department"/>
+		<result property="creditIntegral" column="staff_credit_integral"/>
+		<result property="registerDate" column="staff_register_date"/>
+		<result property="sex" column="staff_sex"/>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

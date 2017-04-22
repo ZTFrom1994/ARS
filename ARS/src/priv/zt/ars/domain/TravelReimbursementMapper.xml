@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.TravelReimbursementMapper">
+    
+     <select id="getTravelByState" parameterType="java.lang.String"  resultMap="travelResultMap" >
+         select * from 
+     		( 
+     			select * from travel_reimburserment_application tra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   travel_reimbursement_item tri
+		        		where   tra.tra_proposer_id = s.staff_id 
+			         			and	tra.tra_project_id = p.project_id
+			         			and tra.tra_event_id = e.event_id
+			         			and tra.tra_id = tri.tri_tra_id 
+			         			and tra.tra_state = #{0}
+			 ) tras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			tras.tra_offset_borrowing_id = obs.ob_id order by tras.tra_apply_date desc;
+     </select>
+     <select id="getTravelById" parameterType="java.lang.String"   resultMap="travelResultMap">
+         select * from 
+     		( 
+     			select * from travel_reimburserment_application tra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   travel_reimbursement_item tri
+		        		where   tra.tra_proposer_id = s.staff_id 
+			         			and	tra.tra_project_id = p.project_id
+			         			and tra.tra_event_id = e.event_id
+			         			and tra.tra_id = tri.tri_tra_id 
+			         			and tra.tra_id = #{0}
+			 ) tras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			tras.tra_offset_borrowing_id = obs.ob_id;
+     </select>
+     <select id="getAllTravel"   resultMap="travelResultMap"
+         resultType="TravelReimbursement">
+         select * from 
+     		( 
+     			select * from travel_reimburserment_application tra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   travel_reimbursement_item tri
+		        		where   tra.tra_proposer_id = s.staff_id 
+			         			and	tra.tra_project_id = p.project_id
+			         			and tra.tra_event_id = e.event_id
+			         			and tra.tra_id = tri.tri_tra_id 
+			 ) tras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			tras.tra_offset_borrowing_id = obs.ob_id;
+     </select>
+     <select id="getTravelByStateAndProposerId" parameterType="java.lang.String"  resultMap="travelResultMap" >
+         select * from 
+     		( 
+     			select * from travel_reimburserment_application tra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   travel_reimbursement_item tri
+		        		where   tra.tra_proposer_id = s.staff_id 
+			         			and	tra.tra_project_id = p.project_id
+			         			and tra.tra_event_id = e.event_id
+			         			and tra.tra_id = tri.tri_tra_id 
+			         			and tra.tra_state = #{0}
+			         			and tra.tra_proposer_id = #{1}
+			 ) tras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			tras.tra_offset_borrowing_id = obs.ob_id order by tras.tra_apply_date desc;
+     </select>
+     <select id="getTravelByIdAndProposerId" parameterType="java.lang.String"   resultMap="travelResultMap">
+         select * from 
+     		( 
+     			select * from travel_reimburserment_application tra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   travel_reimbursement_item tri
+		        		where   tra.tra_proposer_id = s.staff_id 
+			         			and	tra.tra_project_id = p.project_id
+			         			and tra.tra_event_id = e.event_id
+			         			and tra.tra_id = tri.tri_tra_id 
+			         			and tra.tra_id = #{0}
+			         			and tra.tra_proposer_id = #{1}
+			 ) tras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			tras.tra_offset_borrowing_id = obs.ob_id;
+     </select>
+     <select id="getAllTravelByProposerId"  parameterType="java.lang.String" resultMap="travelResultMap"
+         resultType="TravelReimbursement">
+         select * from 
+     		( 
+     			select * from travel_reimburserment_application tra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   travel_reimbursement_item tri
+		        		where   tra.tra_proposer_id = s.staff_id 
+			         			and	tra.tra_project_id = p.project_id
+			         			and tra.tra_event_id = e.event_id
+			         			and tra.tra_id = tri.tri_tra_id 
+			         			and tra.tra_proposer_id = #{0}
+			 ) tras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			tras.tra_offset_borrowing_id = obs.ob_id;
+     </select>
+     
+     <select id="getTravelBySheetId" parameterType="java.lang.String" resultMap="travelResultMap">
+     	select * from 
+     		( 
+     			select * from travel_reimburserment_application tra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   travel_reimbursement_item tri
+		        		where   tra.tra_proposer_id = s.staff_id 
+			         			and	tra.tra_project_id = p.project_id
+			         			and tra.tra_event_id = e.event_id
+			         			and tra.tra_id = tri.tri_tra_id 
+			         			and tra.tra_application_sheet_id = #{0}
+			         			
+			 ) tras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			tras.tra_offset_borrowing_id = obs.ob_id;
+     </select>
+     <select id = "getCountByDateAndProposerId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+     	select count(*) from travel_reimburserment_application
+     		where year(tra_apply_date) = #{0}
+     			and month(tra_apply_date) = #{1}
+     			and tra_proposer_id = #{2}
+     			
+     </select>
+     <select id = "getApprovedCountByDateAndProposerId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+     	select count(*) from travel_reimburserment_application
+     		where year(tra_apply_date) = #{0}
+     			and month(tra_apply_date) = #{1}
+     			and tra_proposer_id = #{2}
+     			and tra_state = '已报销'
+     </select>
+     <select id="getFinishedSumByDate" resultType="java.lang.Float" parameterType="java.lang.Integer">
+     	select ifnull(sum(tra_total_money),0.00) from travel_reimburserment_application
+     		where 	year(tra_finish_date) = #{0} 
+     				and month(tra_finish_date) = #{1}
+     				and dayofmonth(tra_finish_date) = #{2}
+     				and tra_state = '已报销';
+     </select>
+     <insert id="addTravelReimbursement" parameterType="TravelReimbursement" keyProperty="id" useGeneratedKeys="true">
+     	insert into travel_reimburserment_application(
+     		tra_place,
+     		tra_number_of_people,
+     		tra_travel_time,
+     		tra_remarks,
+     		tra_state,
+     		tra_apply_date,
+     		tra_offset_borrowing_id,
+     		tra_payment_type,
+     		tra_proposer_id,
+     		tra_project_id,
+     		tra_total_sheets,
+     		tra_total_money,
+     		tra_event_id,
+     		tra_finish_date
+     	)values(
+     		#{place},
+     		#{peopleNumber},
+     		#{travelTime},
+     		#{remarks},
+     		#{state},
+     		#{applyDate},
+     		#{offsetBorrowing.id},
+     		#{paymentType},
+     		#{proposer.id},
+     		#{project.id},
+     		#{totalSheets},
+     		#{totalMoney},
+     		#{event.id},
+     		#{finishDate}
+     	);
+     </insert>
+     <update id="batchUpdateWithList" parameterType="java.util.List" >
+	    <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+                update travel_reimburserment_application   
+                	set 
+                		tra_state = #{item.state},
+                		tra_application_sheet_id = #{item.sheetId},
+                		tra_leave_messages = #{item.leaveMessages},
+                		tra_event_id = #{item.event.id},
+                		tra_finish_date = #{item.finish_date}
+                where tra_id = #{item.id}
+         </foreach> 
+	</update>
+     <resultMap type="TravelReimbursement" id="travelResultMap">
+         <id property="id" column="tra_id"/>
+         <result property="place" column="tra_place"/>
+         <result property="peopleNumber" column="tra_number_of_people"/>
+         <result property="travelTime" column="tra_travel_time"/>
+         <result property="remarks" column="tra_remarks"/>
+         <result property="state" column="tra_state"/>
+         <result property="applyDate" column="tra_apply_date"/>
+         <result property="paymentType" column="tra_payment_type"/>
+         <result property="leaveMessages" column="tra_leave_messages"/>
+         <result property="sheetId" column="tra_application_sheet_id"/>
+         <result property="totalSheets" column="tra_total_sheets"/>
+         <result property="totalMoney" column="tra_total_money"/>
+         <result property="finishDate" column="tra_finish_date"/>
+         <association property="proposer" javaType="Staff">
+         	<id property="id" column="staff_id"/>
+			<result property="name" column="staff_name"/>
+			<result property="state" column="staff_state"/>
+			<result property="password" column="staff_password"/>
+			<result property="positionName" column="staff_position_name"/>
+			<result property="department" column="staff_department"/>
+			<result property="creditIntegral" column="staff_credit_integral"/>
+			<result property="registerDate" column="staff_register_date"/>
+         </association>
+         <association property="project" javaType="Project">
+         	 <id property="id" column="project_id"/>
+	         <result property="projectName" column="project_name"/>
+	         <result property="department" column="project_department"/>
+	         <result property="reimburseLimit" column="project_reimburse_limit"/>
+	         <result property="balance" column="project_balance"/>
+	         <result property="state" column="project_state"/>
+	         <association property="principal"  javaType="Staff">
+				<id property="id" column="staff_id"/>
+				<result property="name" column="staff_name"/>
+				<result property="state" column="staff_state"/>
+				<result property="password" column="staff_password"/>
+				<result property="positionName" column="staff_position_name"/>
+				<result property="department" column="staff_department"/>
+				<result property="creditIntegral" column="staff_credit_integral"/>
+				<result property="registerDate" column="staff_register_date"/>
+				<result property="sex" column="staff_sex"/>
+	         </association>
+         </association>
+          <association property="offsetBorrowing"  javaType="OffsetBorrowing">
+			<id property="id" column="ob_id"/>
+			<result property="amount" column="ob_amount"/>
+			<result property="state" column="ob_state"/>
+			<association property="borrowRecord" javaType="BorrowRecord">
+				<id property="id" column="br_id"/>
+		         <result property="amount" column="br_amount"/>
+		         <result property="remarks" column="br_remarks"/>
+		         <result property="paymentTime" column="br_payment_time"/>
+		         <result property="state" column="br_state"/>
+		         <result property="paidMoney" column="br_paid_money"/>
+		         <result property="recordDate" column="br_record_date"/>
+		         <result property="use" column="br_use"/>
+		         <association property="project" column="br_project_id" javaType="Project">
+					 <id property="id" column="project_id"/>
+			         <result property="projectName" column="project_name"/>
+			         <result property="department" column="project_department"/>
+			         <result property="reimburseLimit" column="project_reimburse_limit"/>
+			         <result property="balance" column="project_balance"/>
+			         <result property="state" column="project_state"/>
+		         </association>
+		         <association property="borrower"  javaType="Staff">
+					<id property="id" column="staff_id"/>
+					<result property="name" column="staff_name"/>
+					<result property="state" column="staff_state"/>
+					<result property="password" column="staff_password"/>
+					<result property="positionName" column="staff_position_name"/>
+					<result property="department" column="staff_department"/>
+					<result property="creditIntegral" column="staff_credit_integral"/>
+					<result property="registerDate" column="staff_register_date"/>
+					<result property="sex" column="staff_sex"/>
+		         </association>
+			</association>
+         </association>
+         <association property="event"   javaType="Event">
+			 <id property="id" column="event_id"/>
+	         <result property="startTime" column="event_start_time"/>
+	         <result property="endTime" column="event_end_time"/>
+	         <result property="title" column="event_type"/>
+	         <result property="color" column="event_color"/>
+         </association>
+         
+         <collection property="itemList" ofType="TravelReimbursementItem" column="tri_tra_id">
+			 <id property="id" column="tri_id"/>
+	         <result property="traId" column="tri_tra_id"/>
+	         <result property="largeClass" column="tri_large_class"/>
+	         <result property="smallClass" column="tri_small_class"/>
+	         <result property="sheetNumber" column="tri_sheet_number"/>
+	         <result property="peopleNumber" column="tri_people_number"/>
+	         <result property="singlePrice" column="tri_single_price"/>
+	         <result property="description" column="tri_description"/>
+         </collection>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

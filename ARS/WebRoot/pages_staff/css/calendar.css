@@ -1,0 +1,6 @@
+#calendar {
+	width: 100%;
+}
+.event-lay-top{
+	z-index: 3000;
+}

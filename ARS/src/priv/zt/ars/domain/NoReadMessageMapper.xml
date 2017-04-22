@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.NoReadMessageMapper">
+   	<select id="getAdminNoReadMessageById" parameterType="java.lang.Integer" resultMap="noReadMessageResultMap">
+   		select * from no_read_message,message,admin
+   			where 
+   					nrm_message_id = message_id and
+   					message_sender_id = admin_id and
+   					nrm_user_type = 0 and
+   					nrm_user_id = #{0}
+   	</select>
+   	<select id="getAssessorNoReadMessageById" parameterType="java.lang.Integer" resultMap="noReadMessageResultMap">
+   		select * from no_read_message,message,admin
+   			where 
+   					nrm_message_id = message_id and
+   					message_sender_id = admin_id and
+   					nrm_user_type = 1 and
+   					nrm_user_id = #{0}
+   	</select>
+   	<select id="getStaffNoReadMessageById" parameterType="java.lang.Integer" resultMap="noReadMessageResultMap">
+   		select * from no_read_message,message,admin
+   			where 
+   					nrm_message_id = message_id and
+   					message_sender_id = admin_id and
+   					nrm_user_type = 2 and
+   					nrm_user_id = #{0}
+   	</select>
+     <insert id="batchAddNoReadMessage"  parameterType="java.util.List">
+     	<foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+	     	insert into no_read_message (
+	     		nrm_user_type,
+	     		nrm_user_id,
+	     		nrm_message_id
+	     	)values(
+	     		#{item.userType},
+	     		#{item.userId},
+	     		#{item.message.id}
+	     	)
+     	</foreach> 
+     </insert>
+     <delete id="clearAdminNoReadMessageById" parameterType="java.lang.Integer">
+     	delete from no_read_message where 
+     			nrm_user_type = 0 and
+     			nrm_user_id = #{0}
+     </delete>
+     <delete id="clearAssessorNoReadMessageById" parameterType="java.lang.Integer">
+     	delete from no_read_message where 
+     			nrm_user_type = 1 and
+     			nrm_user_id = #{0}
+     </delete>
+     <delete id="clearStaffNoReadMessageById" parameterType="java.lang.Integer">
+     	delete from no_read_message where 
+     			nrm_user_type = 2 and
+     			nrm_user_id = #{0}
+     </delete>
+     <resultMap type="NoReadMessage" id="noReadMessageResultMap">
+         <id property="id" column="nrm_id"/>
+         <result property="userType" column="nrm_user_type"/>
+         <result property="userId" column="nrm_user_id"/>
+         <association property="message" javaType="Message">
+         	  <id property="id" column="message_id"/>
+	         <result property="object" column="message_object"/>
+	         <result property="content" column="message_content"/>
+	         <result property="state" column="message_state"/>
+	         <result property="type" column="message_type"/>
+	         <result property="date" column="message_send_date"/>
+	         <association property="admin" javaType="Admin">
+	         	 <id property="id" column="admin_id"/>
+		         <result property="name" column="admin_name"/>
+		         <result property="password" column="admin_password"/>
+		         <result property="sex" column="admin_sex"/>
+         	</association>
+         </association>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

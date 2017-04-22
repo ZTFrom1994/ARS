@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system-settings>
+	<functions>
+		<function name="dailyReimbursement">1</function>
+		<function name="travelReimbursement">1</function>
+		<function name="offsetBorrowing">1</function>
+		<function name="borrow">1</function>
+	</functions>
+	<system-open>1</system-open>
+</system-settings>

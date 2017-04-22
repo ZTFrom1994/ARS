@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.OffsetBorrowingMapper">
+    
+     <insert id="addOffset" parameterType="OffsetBorrowing" useGeneratedKeys="true" keyProperty="id">
+     	insert into offset_borrowing
+     	(
+     			ob_borrow_record_id,
+     			ob_amount,
+     			ob_state
+     	)values(
+     		#{borrowRecord.id},
+     		#{amount},
+     		#{state}
+     	)
+     </insert>
+     <update id="updateOffsetBorrowing" parameterType="OffsetBorrowing">
+     	update offset_borrowing 
+     		set ob_state = #{state}
+     		where ob_id = #{id}
+     </update>
+     
+     <resultMap type="OffsetBorrowing" id="offsetBorrowingResultMap">
+         	<id property="id" column="ob_id"/>
+			<result property="amount" column="ob_amount"/>
+			<result property="state" column="ob_state"/>
+			<association property="borrowRecord" javaType="BorrowRecord">
+				<id property="id" column="br_id"/>
+		         <result property="amount" column="br_amount"/>
+		         <result property="remarks" column="br_remarks"/>
+		         <result property="paymentTime" column="br_payment_time"/>
+		         <result property="state" column="br_state"/>
+		         <result property="paidMoney" column="br_paid_money"/>
+		         <result property="recordDate" column="br_record_date"/>
+		         <result property="use" column="br_use"/>
+		         <association property="project" column="br_project_id" javaType="Project">
+					 <id property="id" column="project_id"/>
+			         <result property="projectName" column="project_name"/>
+			         <result property="department" column="project_department"/>
+			         <result property="reimburseLimit" column="project_reimburse_limit"/>
+			         <result property="balance" column="project_balance"/>
+			         <result property="state" column="project_state"/>
+		         </association>
+		         <association property="borrower"  javaType="Staff">
+					<id property="id" column="staff_id"/>
+					<result property="name" column="staff_name"/>
+					<result property="state" column="staff_state"/>
+					<result property="password" column="staff_password"/>
+					<result property="positionName" column="staff_position_name"/>
+					<result property="department" column="staff_department"/>
+					<result property="creditIntegral" column="staff_credit_integral"/>
+					<result property="registerDate" column="staff_register_date"/>
+					<result property="sex" column="staff_sex"/>
+		         </association>
+			</association>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

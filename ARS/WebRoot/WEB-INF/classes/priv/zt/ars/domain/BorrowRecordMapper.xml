@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.BorrowRecordMapper">
+    
+     <select id="getAllRecord"   resultMap="borrowRecordResultMap" >
+         select * from borrow_record br ,
+         			   project p,
+         			   staff s
+         	where br.br_project_id = p.project_id and 
+         		  br.br_borrower_id = s.staff_id
+     </select>
+     <select id="getRecentReturnRecord"   resultMap="borrowRecordResultMap" >
+         select * from borrow_record br ,
+         			   project p,
+         			   staff s
+         	where br.br_project_id = p.project_id and 
+         		  br.br_borrower_id = s.staff_id and
+         		  br.br_state = '还款中' order by br.br_payment_time;
+         		  
+     </select>
+     <select id="getRecordById" parameterType="java.lang.Integer" resultMap="borrowRecordResultMap">
+     		select * from borrow_record where br_id = #{0}
+     </select>
+     <select id="getRecordByApplicationId" parameterType="java.lang.Integer" resultMap="borrowRecordResultMap">
+     		select * from borrow_record where br_application_id = #{0}
+     </select>
+     <select id="getRecordByBorrowerId"  parameterType="java.lang.String" resultMap="borrowRecordResultMap" >
+         select * from borrow_record br ,
+         			   project p,
+         			   staff s
+         	where br.br_project_id = p.project_id and 
+         		  br.br_borrower_id = s.staff_id and 
+         		  br.br_borrower_id = #{0}
+     </select>
+     <select id="getRecordByStateAndBorrowerId"  parameterType="java.lang.String" resultMap="borrowRecordResultMap" >
+         select * from borrow_record br ,
+         			   project p,
+         			   staff s
+         	where br.br_project_id = p.project_id and 
+         		  br.br_borrower_id = s.staff_id and 
+         		  br.br_borrower_id = #{1} and 
+         		  br.br_state = #{0}
+     </select>
+     <select id="getFinishedSumByDate" parameterType="java.lang.Integer" resultType="java.lang.Float">
+     	select ifnull(sum(br_amount),0.00) from borrow_record
+     		where 	year(br_record_date) = #{0} 
+     				and month(br_record_date) = #{1}
+     				and dayofmonth(br_record_date) = #{2}
+     </select>
+     <update id="updateRecord" parameterType="BorrowRecord" >
+     	update borrow_record set
+     			br_paid_money = #{paidMoney},
+     			br_state = #{state} 
+     			where br_id = #{id}
+     </update>
+     
+     <insert id="addRecord" parameterType="BorrowRecord">
+     	insert into borrow_record
+     	(
+     		br_remarks,
+     		br_payment_time,
+     		br_state,
+     		br_paid_money,
+     		br_record_date,
+     		br_use,
+     		br_project_id,
+     		br_borrower_id,
+     		br_amount,
+     		br_application_id
+     	)values
+     	(
+     		#{remarks},
+     		#{paymentTime},
+     		#{state},
+     		#{paidMoney},
+     		#{recordDate},
+     		#{use},
+     		#{project.id},
+     		#{borrower.id},
+     		#{amount},
+     		#{applicationId}
+     	)
+     </insert>
+     <resultMap type="BorrowRecord" id="borrowRecordResultMap">
+         <id property="id" column="br_id"/>
+         <result property="amount" column="br_amount"/>
+         <result property="remarks" column="br_remarks"/>
+         <result property="paymentTime" column="br_payment_time"/>
+         <result property="state" column="br_state"/>
+         <result property="paidMoney" column="br_paid_money"/>
+         <result property="recordDate" column="br_record_date"/>
+         <result property="use" column="br_use"/>
+         <result property="applicationId" column="br_application_id"/>
+         <association property="project"  javaType="Project">
+			 <id property="id" column="project_id"/>
+	         <result property="projectName" column="project_name"/>
+	         <result property="department" column="project_department"/>
+	         <result property="reimburseLimit" column="project_reimburse_limit"/>
+	         <result property="balance" column="project_balance"/>
+	         <result property="state" column="project_state"/>
+         </association>
+         <association property="borrower"  javaType="Staff">
+			<id property="id" column="staff_id"/>
+			<result property="name" column="staff_name"/>
+			<result property="state" column="staff_state"/>
+			<result property="password" column="staff_password"/>
+			<result property="positionName" column="staff_position_name"/>
+			<result property="department" column="staff_department"/>
+			<result property="creditIntegral" column="staff_credit_integral"/>
+			<result property="registerDate" column="staff_register_date"/>
+			<result property="sex" column="staff_sex"/>
+         </association>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

@@ -1,0 +1,22 @@
+.td-pass:hover{
+	cursor:pointer;
+	text-align:center;
+	color:#53DB50;
+}
+.td-no-pass:hover{
+	cursor:pointer;
+	text-align:center;
+	color:#D13735;
+}
+.td-pass{
+	color:#C5FFCB;
+}
+.td-no-pass{
+	color:#FFBFB4;
+}
+.pass-click{
+	color:#53DB50;
+}
+.no-pass-click{
+	color:#D13735;
+}

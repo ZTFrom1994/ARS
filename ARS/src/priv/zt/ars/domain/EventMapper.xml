@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.EventMapper">
+    
+     <select id="getAllEvent"  resultMap="eventResultMap">
+         select * from event where event_state = 1
+     </select>
+     
+     <insert id="addEvent" parameterType="Event" useGeneratedKeys="true" keyProperty="id">
+     	 insert into event(
+     	 	event_start_time,
+     	 	event_end_time,
+     	 	event_type,
+     	 	event_color,
+     	 	event_state
+     	 )values(
+     	 	#{startTime},
+     	 	#{endTime},
+     	 	#{title},
+     	 	#{color},
+     	 	1
+     	 )
+     </insert>
+     <update id="updateEvent" parameterType="Event">
+     	update event set
+     		event_state = #{state} where event_id = #{id} 
+     </update>
+     <delete id="deleteEventById" parameterType="java.lang.String">
+     	delete from event where event_id = #{0}
+     </delete>
+     <resultMap type="Event" id="eventResultMap">
+         <id property="id" column="event_id"/>
+         <result property="startTime" column="event_start_time"/>
+         <result property="endTime" column="event_end_time"/>
+         <result property="title" column="event_type"/>
+         <result property="color" column="event_color"/>
+         <result property="state" column="event_state"/>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

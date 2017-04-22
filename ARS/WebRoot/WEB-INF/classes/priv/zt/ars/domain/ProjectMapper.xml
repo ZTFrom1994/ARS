@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.ProjectMapper">
+ 
+     <select id="getProjectByPrincipalId" parameterType="java.lang.String"  resultMap="projectResultMap" >
+         select * from project p,staff s where project_principal_id=#{0} and staff_id=#{0};
+     </select>
+     <resultMap type="Project" id="projectResultMap">
+         <id property="id" column="project_id"/>
+         <result property="projectName" column="project_name"/>
+         <result property="department" column="project_department"/>
+         <result property="reimburseLimit" column="project_reimburse_limit"/>
+         <result property="balance" column="project_balance"/>
+         <result property="state" column="project_state"/>
+         <association property="principal"  javaType="Staff">
+			<id property="id" column="staff_id"/>
+			<result property="name" column="staff_name"/>
+			<result property="state" column="staff_state"/>
+			<result property="password" column="staff_password"/>
+			<result property="positionName" column="staff_position_name"/>
+			<result property="department" column="staff_department"/>
+			<result property="creditIntegral" column="staff_credit_integral"/>
+			<result property="registerDate" column="staff_register_date"/>
+			<result property="sex" column="staff_sex"/>
+         </association>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

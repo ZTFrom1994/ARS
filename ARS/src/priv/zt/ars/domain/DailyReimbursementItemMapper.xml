@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.DailyReimbursementItemMapper">
+	 <select id="getAllItems"  resultMap="dailyItemsResultMap">
+	         select * from daily_reimbursement_item  
+     </select>
+     <insert id="batchAddByList" parameterType="java.util.List">
+     	<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+	     	insert into daily_reimbursement_item( 
+	     			dri_dra_id,
+	     			dri_large_class,
+	     			dri_small_class,
+	     			dri_number,
+	     			dri_name,
+	     			dri_total,
+	     			dri_description
+	     		)values
+	     		(
+	     			#{item.draId},
+	     			#{item.largeClass},
+	     			#{item.smallClass},
+	     			#{item.number},
+	     			#{item.name},
+	     			#{item.total},
+	     			#{item.description}
+	     		)
+     	</foreach>
+     </insert>
+     <resultMap type="DailyReimbursementItem" id="dailyItemsResultMap">
+         <id property="id" column="dri_item_id"/>
+         <result property="draId" column="dri_dra_id"/>
+         <result property="largeClass" column="dri_large_class"/>
+         <result property="smallClass" column="dri_small_class"/>
+         <result property="number" column="dri_number"/>
+         <result property="name" column="dri_name"/>
+         <result property="total" column="dri_total"/>
+         <result property="description" column="dri_description"/>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

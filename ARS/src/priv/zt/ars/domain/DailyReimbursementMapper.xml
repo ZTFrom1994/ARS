@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.DailyReimbursementMapper">
+     <select id="getReimbursementById" parameterType="java.lang.String"  resultMap="dailyReimbursementResultMap">
+         select * from 
+     		( 
+     			select * from daily_reimbursement_application dra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   daily_reimbursement_item dri
+		        		where   dra.dra_proposer_id = s.staff_id 
+			         			and	dra.dra_project_id = p.project_id
+			         			and dra.dra_event_id = e.event_id
+			         			and dra.dra_id = dri.dri_dra_id 
+			         			and dra.dra_id = #{0}
+			         			
+			 ) dras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			dras.dra_offset_borrowing_id = obs.ob_id;
+         	
+     </select>
+     <select id="getReimbursementByState" parameterType="java.lang.String" resultMap="dailyReimbursementResultMap">
+     		select * from 
+     		( 
+     			select * from daily_reimbursement_application dra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   daily_reimbursement_item dri
+		        		where   dra.dra_proposer_id = s.staff_id 
+			         			and	dra.dra_project_id = p.project_id
+			         			and dra.dra_event_id = e.event_id
+			         			and dra.dra_id = dri.dri_dra_id 
+			         			and dra.dra_state = #{0}
+			         			
+			 ) dras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			dras.dra_offset_borrowing_id = obs.ob_id order by dras.dra_apply_date desc;
+     </select>
+     <select id="getAllReimbursements" resultMap="dailyReimbursementResultMap">
+     	select * from 
+     		( 
+     			select * from daily_reimbursement_application dra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   daily_reimbursement_item dri
+		        		where   dra.dra_proposer_id = s.staff_id 
+			         			and	dra.dra_project_id = p.project_id
+			         			and dra.dra_event_id = e.event_id
+			         			and dra.dra_id = dri.dri_dra_id 
+			         			
+			 ) dras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			dras.dra_offset_borrowing_id = obs.ob_id;
+     </select>
+     <select id="getReimbursementByIdAndProposerId" parameterType="java.lang.String"  resultMap="dailyReimbursementResultMap">
+         select * from 
+     		( 
+     			select * from daily_reimbursement_application dra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   daily_reimbursement_item dri
+		        		where   dra.dra_proposer_id = s.staff_id 
+			         			and	dra.dra_project_id = p.project_id
+			         			and dra.dra_event_id = e.event_id
+			         			and dra.dra_id = dri.dri_dra_id 
+			         			and dra.dra_id = #{0}
+			         			and dra.dra_proposer_id = #{1}
+			         			
+			 ) dras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			dras.dra_offset_borrowing_id = obs.ob_id;
+         	
+     </select>
+     <select id="getReimbursementByStateAndProposerId" parameterType="java.lang.String" resultMap="dailyReimbursementResultMap">
+     		select * from 
+     		( 
+     			select * from daily_reimbursement_application dra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   daily_reimbursement_item dri
+		        		where   dra.dra_proposer_id = s.staff_id 
+			         			and	dra.dra_project_id = p.project_id
+			         			and dra.dra_event_id = e.event_id
+			         			and dra.dra_id = dri.dri_dra_id 
+			         			and dra.dra_state = #{0}
+			         			and dra.dra_proposer_id = #{1}
+			         			
+			 ) dras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			dras.dra_offset_borrowing_id = obs.ob_id order by dras.dra_apply_date desc;
+     </select>
+     <select id="getAllReimbursementsByProposerId" parameterType="java.lang.String" resultMap="dailyReimbursementResultMap">
+     	select * from 
+     		( 
+     			select * from daily_reimbursement_application dra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   daily_reimbursement_item dri
+		        		where   dra.dra_proposer_id = s.staff_id 
+			         			and	dra.dra_project_id = p.project_id
+			         			and dra.dra_event_id = e.event_id
+			         			and dra.dra_id = dri.dri_dra_id 
+			         			and dra.dra_proposer_id = #{0}
+			         			
+			 ) dras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			dras.dra_offset_borrowing_id = obs.ob_id;
+     </select>
+     
+     <select id="getDailyBySheetId" parameterType="java.lang.String" resultMap="dailyReimbursementResultMap">
+     	select * from 
+     		( 
+     			select * from daily_reimbursement_application dra ,
+     						( 
+         						select * from  project pr,(select staff_id as st_id,staff_name as st_name from staff) st where pr.project_principal_id =  st.st_id
+         					) p,
+	        			   staff s,
+	        			   event e,
+	        			   daily_reimbursement_item dri
+		        		where   dra.dra_proposer_id = s.staff_id 
+			         			and	dra.dra_project_id = p.project_id
+			         			and dra.dra_event_id = e.event_id
+			         			and dra.dra_id = dri.dri_dra_id
+			         			and dra.dra_application_sheet_id = #{0} 
+			         			
+			 ) dras
+			 LEFT JOIN 
+     		(
+     			select * from offset_borrowing ob ,(
+     													select * from borrow_record br,project pro,(select staff_id as sta_id,staff_name as sta_name from staff) sta 
+     														where br.br_project_id = pro.project_id and 
+												         		  br.br_borrower_id = sta.sta_id 
+     												)brs
+     						where ob.ob_borrow_record_id = brs.br_id 
+     		)obs
+     		ON
+     			dras.dra_offset_borrowing_id = obs.ob_id;
+     </select>
+     <select id="getCountByDateAndProposerId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+     	select count(*) from daily_reimbursement_application
+     		where year(dra_apply_date) = #{0} 
+     				and month(dra_apply_date) = #{1}
+     				and dra_proposer_id = #{2};
+     </select>
+     <select id="getApprovedCountByDateAndProposerId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+     	select count(*) from daily_reimbursement_application
+     		where year(dra_apply_date) = #{0} 
+     				and month(dra_apply_date) = #{1}
+     				and dra_proposer_id = #{2}
+     				and dra_state = '已报销';
+     </select>
+     <select id="getFinishedSumByDate" parameterType="java.lang.Integer" resultType="java.lang.Float">
+     	select ifnull(sum(dra_total_money),0.00) from daily_reimbursement_application
+     		where 	year(dra_finish_date) = #{0} 
+     				and month(dra_finish_date) = #{1}
+     				and dayofmonth(dra_finish_date) = #{2}
+     				and dra_state = '已报销';
+     </select>
+     <insert   id="addSingleApplication" parameterType="DailyReimbursement" useGeneratedKeys="true" keyProperty="id" >
+     		insert into daily_reimbursement_application(
+	     				dra_remarks,
+	     				dra_project_id,
+	     				dra_apply_date,
+	     				dra_proposer_id,
+	     				dra_state,
+	     				dra_payment_type,
+	     				dra_event_id,
+	     				dra_offset_borrowing_id,
+	     				dra_total_number,
+	     				dra_total_money,
+	     				dra_finish_date
+     				) values(
+	     				#{remarks},
+	     				#{project.id},
+	     				#{applyDate},
+	     				#{proposer.id},
+	     				#{state},
+	     				#{paymentType},
+	     				#{event.id},
+	     				#{offsetBorrowing.id},
+	     				#{totalNumber},
+	     				#{totalMoney},
+	     				#{finishDate}
+     				) 
+     </insert >
+     <update id="batchUpdateWithList" parameterType="java.util.List" >
+	    <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+                update daily_reimbursement_application  
+                	set 
+                		dra_state = #{item.state},
+                		dra_application_sheet_id = #{item.sheetId},
+                		dra_leave_messages = #{item.leaveMessages},
+                		dra_event_id = #{item.event.id},
+                		dra_finish_date = #{item.finishDate}
+                where dra_id = #{item.id}
+         </foreach> 
+	</update>
+    
+     <resultMap type="DailyReimbursement" id="dailyReimbursementResultMap">
+         <id property="id" column="dra_id"/>
+         <result property="applyDate" column="dra_apply_date"/>
+         <result property="state" column="dra_state"/>
+         <result property="remarks" column="dra_remarks"/>
+         <result property="paymentType" column="dra_payment_type"/>
+         <result property="sheetId" column="dra_application_sheet_id"/>
+         <result property="leaveMessages" column="dra_leave_messages"/>
+         <result property="totalMoney" column="dra_total_money"/>
+         <result property="totalNumber" column="dra_total_number"/>
+         <result property="finishDate" column="tra_finish_date"/>
+         <association property="proposer" column="dra_proposer_id" javaType="Staff">
+			<id property="id" column="staff_id"/>
+			<result property="name" column="staff_name"/>
+			<result property="state" column="staff_state"/>
+			<result property="password" column="staff_password"/>
+			<result property="positionName" column="staff_position_name"/>
+			<result property="department" column="staff_department"/>
+			<result property="creditIntegral" column="staff_credit_integral"/>
+			<result property="registerDate" column="staff_register_date"/>
+         </association>
+         <association property="project" column="project_id" javaType="Project">
+			<id property="id" column="project_id"/>
+	         <result property="projectName" column="project_name"/>
+	         <result property="department" column="project_department"/>
+	         <result property="reimburseLimit" column="project_reimburse_limit"/>
+	         <result property="balance" column="project_balance"/>
+	         <result property="state" column="project_state"/>
+	         <association property="principal" column="project_principal_id" javaType="Staff">
+				<id property="id" column="staff_id"/>
+				<result property="name" column="staff_name"/>
+				<result property="state" column="staff_state"/>
+				<result property="password" column="staff_password"/>
+				<result property="positionName" column="staff_position_name"/>
+				<result property="department" column="staff_department"/>
+				<result property="creditIntegral" column="staff_credit_integral"/>
+				<result property="registerDate" column="staff_register_date"/>
+				<result property="sex" column="staff_sex"/>
+	         </association>
+         </association>
+         <association property="offsetBorrowing"  javaType="OffsetBorrowing">
+			<id property="id" column="ob_id"/>
+			<result property="amount" column="ob_amount"/>
+			<result property="state" column="ob_state"/>
+			<association property="borrowRecord" javaType="BorrowRecord">
+				<id property="id" column="br_id"/>
+		         <result property="amount" column="br_amount"/>
+		         <result property="remarks" column="br_remarks"/>
+		         <result property="paymentTime" column="br_payment_time"/>
+		         <result property="state" column="br_state"/>
+		         <result property="paidMoney" column="br_paid_money"/>
+		         <result property="recordDate" column="br_record_date"/>
+		         <result property="use" column="br_use"/>
+		         <association property="project" column="br_project_id" javaType="Project">
+					 <id property="id" column="project_id"/>
+			         <result property="projectName" column="project_name"/>
+			         <result property="department" column="project_department"/>
+			         <result property="reimburseLimit" column="project_reimburse_limit"/>
+			         <result property="balance" column="project_balance"/>
+			         <result property="state" column="project_state"/>
+		         </association>
+		         <association property="borrower"  javaType="Staff">
+					<id property="id" column="staff_id"/>
+					<result property="name" column="staff_name"/>
+					<result property="state" column="staff_state"/>
+					<result property="password" column="staff_password"/>
+					<result property="positionName" column="staff_position_name"/>
+					<result property="department" column="staff_department"/>
+					<result property="creditIntegral" column="staff_credit_integral"/>
+					<result property="registerDate" column="staff_register_date"/>
+					<result property="sex" column="staff_sex"/>
+		         </association>
+			</association>
+         </association>
+         <association property="event"   javaType="Event">
+			 <id property="id" column="event_id"/>
+	         <result property="startTime" column="event_start_time"/>
+	         <result property="endTime" column="event_end_time"/>
+	         <result property="title" column="event_type"/>
+	         <result property="color" column="event_color"/>
+         </association>
+         <collection property="itemList"   ofType="DailyReimbursementItem" column="dri_dra_id">
+			 <id property="id" column="dri_item_id"/>
+	         <result property="draId" column="dri_dra_id"/>
+	         <result property="largeClass" column="dri_large_class"/>
+	         <result property="smallClass" column="dri_small_class"/>
+	         <result property="number" column="dri_number"/>
+	         <result property="name" column="dri_name"/>
+	         <result property="total" column="dri_total"/>
+	         <result property="description" column="dri_description"/>
+         </collection>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

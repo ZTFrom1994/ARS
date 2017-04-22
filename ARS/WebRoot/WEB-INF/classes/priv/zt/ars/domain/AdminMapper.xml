@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.AdminMapper">
+    
+     <select id="getAdminById" parameterType="java.lang.String"  resultMap="adminResultMap" >
+         select * from admin where admin_id=#{0} 
+     </select>
+     <select id="getAllAdmin" resultMap="adminResultMap">
+     	select * from admin
+     </select>
+     <update id="changePasswordById" parameterType="java.lang.String">
+     		update admin set admin_password = #{1} where admin_id = #{0}
+     </update>
+     
+     <resultMap type="Admin" id="adminResultMap">
+         <id property="id" column="admin_id"/>
+         <result property="name" column="admin_name"/>
+         <result property="password" column="admin_password"/>
+         <result property="sex" column="admin_sex"/>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 

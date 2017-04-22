@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="priv.zt.ars.dao.ApplicationSheetMapper">
+    
+     <select id="getSheetByDailyReimbursementId" parameterType="java.lang.String" resultMap="sheetResultMap">
+     	select * from application_sheet,daily_reimbursement_application 
+     		where dra_application_sheet_id = as_id and dra_id = #{0};
+     </select>
+     <select id="getSheetByTravelReimbursementId" parameterType="java.lang.String" resultMap="sheetResultMap">
+     	select * from application_sheet,travel_reimburserment_application 
+     		where tra_application_sheet_id = as_id and tra_id = #{0};
+     </select>
+     <select id="getSheetByBorrowApplicationId" parameterType="java.lang.String" resultMap="sheetResultMap">
+     	select * from application_sheet,borrow_application
+     		where ba_application_sheet_id = as_id and ba_id = #{0};
+     </select>
+     <select id="getSheetById" parameterType="java.lang.String" resultMap="sheetResultMap">
+     	select * from application_sheet
+     		where as_id = #{0} ;
+     </select>
+     <select id="getTopFiveSheetsByStaffId" parameterType="java.lang.Integer" resultMap="sheetResultMap">
+     	select * from application_sheet
+     		where as_staff_id = #{0} order by as_date desc limit 0,4
+     </select>
+     <insert id="addSheet" parameterType="ApplicationSheet" useGeneratedKeys="true" keyProperty="id">
+     	 insert into application_sheet(
+     	 	as_date,
+     	 	as_type,
+     	 	as_invoice_check,
+     	 	as_result,
+     	 	as_remarks,
+     	 	as_staff_id
+     	 )values(
+     	 	#{date},
+     	 	#{type},
+     	 	#{invoiceCheck},
+     	 	#{reimbursementResult},
+     	 	#{remarks},
+     	 	#{staffId}
+     	 )
+     </insert>
+     <update id="updateSheet" parameterType="ApplicationSheet">
+     	update application_sheet set
+     		 as_date = #{date},
+     		 as_type = #{type},
+     		 as_invoice_check = #{invoiceCheck},
+     		 as_result = #{reimbursementResult},
+     		 as_remarks = #{remarks},
+     		 as_staff_id = #{staffId}
+     		 where as_id = #{id}
+     </update>
+     <resultMap type="ApplicationSheet" id="sheetResultMap">
+         <id property="id" column="as_id"/>
+         <result property="date" column="as_date"/>
+         <result property="type" column="as_type"/>
+         <result property="invoiceCheck" column="as_invoice_check"/>
+         <result property="reimbursementResult" column="as_result"/>
+         <result property="remarks" column="as_remarks"/>
+         <result property="staffId" column="as_staff_id"/>
+     </resultMap>
+ </mapper>
+  
+ 
+ 
+ 
+ 
+ 
